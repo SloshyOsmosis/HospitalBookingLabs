@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Register">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-75dp">
+
+        <Button
+            android:id="@+id/createButton"
+            android:layout_width="218dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="36dp"
+            android:text="Create Account"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rePassRegEditText" />
+
+        <EditText
+            android:id="@+id/fNameEditText"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="116dp"
+            android:ems="10"
+            android:hint="First Name..."
+            android:inputType="text"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/emailRegEditText"
+            android:layout_width="314dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="36dp"
+            android:ems="10"
+            android:hint="Email..."
+            android:inputType="text"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lNameEditText" />
+
+        <EditText
+            android:id="@+id/rePassRegEditText"
+            android:layout_width="315dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="36dp"
+            android:ems="10"
+            android:hint="Retype Password..."
+            android:inputType="textPassword"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passRegEditText" />
+
+        <EditText
+            android:id="@+id/passRegEditText"
+            android:layout_width="315dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="36dp"
+            android:ems="10"
+            android:hint="Password..."
+            android:inputType="textPassword"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.479"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailRegEditText" />
+
+        <Button
+            android:id="@+id/backToLoginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Back to Login"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createButton" />
+
+        <EditText
+            android:id="@+id/lNameEditText"
+            android:layout_width="315dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="36dp"
+            android:ems="10"
+            android:hint="Last Name..."
+            android:inputType="text"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fNameEditText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
