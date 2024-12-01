@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PatientFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:text="Add Patient"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/PatientAgeET"
+            android:layout_width="333dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="44dp"
+            android:ems="10"
+            android:hint="Patient age..."
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PatientLNameET" />
+
+        <EditText
+            android:id="@+id/PatientLNameET"
+            android:layout_width="333dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="44dp"
+            android:ems="10"
+            android:hint="Patient last name..."
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PatientFNameET" />
+
+        <EditText
+            android:id="@+id/PatientFNameET"
+            android:layout_width="333dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="80dp"
+            android:ems="10"
+            android:hint="Patient first name..."
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <Spinner
+            android:id="@+id/genderSpinner"
+            android:layout_width="333dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="44dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PatientAgeET" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
