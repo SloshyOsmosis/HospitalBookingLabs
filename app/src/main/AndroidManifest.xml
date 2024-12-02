@@ -13,6 +13,12 @@
         android:theme="@style/Theme.SecDevLab3"
         tools:targetApi="31">
         <activity
+            android:name=".UpdateDoctorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddDoctorActivity"
+            android:exported="false" />
+        <activity
             android:name=".UpdatePatientActivity"
             android:exported="false" />
         <activity

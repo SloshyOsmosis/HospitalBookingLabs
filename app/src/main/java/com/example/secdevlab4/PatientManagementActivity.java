@@ -1,7 +1,5 @@
 package com.example.secdevlab4;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,15 +10,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PatientManagementActivity extends AppCompatActivity {
@@ -29,7 +22,7 @@ public class PatientManagementActivity extends AppCompatActivity {
     FloatingActionButton add_patient;
     DBHelper myDB;
 
-    CustomAdapter customAdapter;
+    PatientCustomAdapter patientCustomAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +46,7 @@ public class PatientManagementActivity extends AppCompatActivity {
         patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Patient selectedPatient = (Patient) customAdapter.getItem(position);
+                Patient selectedPatient = (Patient) patientCustomAdapter.getItem(position);
 
                 Intent intent = new Intent(PatientManagementActivity.this, UpdatePatientActivity.class);
                 intent.putExtra("patientId", selectedPatient.getId());
@@ -69,7 +62,7 @@ public class PatientManagementActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Selected patient is chosen
-                Patient selectedPatient = (Patient) customAdapter.getItem(position);
+                Patient selectedPatient = (Patient) patientCustomAdapter.getItem(position);
 
                 new AlertDialog.Builder(PatientManagementActivity.this)
                         .setTitle("Delete Patient")
@@ -101,7 +94,7 @@ public class PatientManagementActivity extends AppCompatActivity {
 
     private void loadPatients() {
         List<Patient> patients = myDB.getPatients();
-        customAdapter = new CustomAdapter(this, patients);
-        patientList.setAdapter(customAdapter);
+        patientCustomAdapter = new PatientCustomAdapter(this, patients);
+        patientList.setAdapter(patientCustomAdapter);
     }
 }

@@ -39,7 +39,6 @@ public class AddPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addPatientToDatabase();
-
             }
         });
     }

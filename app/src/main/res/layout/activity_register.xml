@@ -21,6 +21,7 @@
             android:layout_height="59dp"
             android:layout_marginTop="28dp"
             android:text="Create Account"
+            android:textColor="@color/white"
             android:textSize="24sp"
             app:backgroundTint="#3aa8c1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +95,7 @@
             android:layout_height="59dp"
             android:layout_marginTop="16dp"
             android:text="Back to Login"
+            android:textColor="@color/white"
             android:textSize="24sp"
             app:backgroundTint="#3aa8c1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -101,7 +103,7 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/createButton"
-            app:layout_constraintVertical_bias="0.189" />
+            app:layout_constraintVertical_bias="0.017" />
 
         <EditText
             android:id="@+id/lNameEditText"
