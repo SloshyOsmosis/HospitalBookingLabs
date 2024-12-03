@@ -58,7 +58,7 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/patientName"
+        android:id="@+id/textDoctor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

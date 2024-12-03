@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".AddPatientActivity">
+
+
+    <!-- Doctor Spinner -->
+
+    <Button
+        android:id="@+id/buttonUpdateAppointment"
+        android:layout_width="275dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="68dp"
+        android:text="Update Appointment"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:backgroundTint="#3aa8c1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/patientLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Patient"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/patientSpinner"
+        app:layout_constraintStart_toStartOf="@+id/patientSpinner" />
+
+    <Spinner
+        android:id="@+id/patientSpinner"
+        android:layout_width="371dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="68dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appointmentText" />
+
+    <TextView
+        android:id="@+id/doctorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Doctor"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/doctorSpinner"
+        app:layout_constraintStart_toStartOf="@+id/doctorSpinner" />
+
+    <Spinner
+        android:id="@+id/doctorSpinner"
+        android:layout_width="371dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="36dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patientSpinner" />
+
+    <!-- Time -->
+
+    <EditText
+        android:id="@+id/editTextReason"
+        android:layout_width="371dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="24dp"
+        android:hint="Reason for appointment"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTime"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/dateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Date"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTime"
+        app:layout_constraintStart_toStartOf="@+id/editTextReason" />
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="371dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="32dp"
+        android:hint="YYYY-MM-DD"
+        android:inputType="date"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/doctorSpinner"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <TextView
+        android:id="@+id/timeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Time"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextDate"
+        app:layout_constraintStart_toStartOf="@+id/editTextDate" />
+
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="371dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="32dp"
+        android:hint="HH:MM"
+        android:inputType="time"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDate"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <TextView
+        android:id="@+id/appointmentText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Update Appointment"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

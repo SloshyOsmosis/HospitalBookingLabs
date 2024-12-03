@@ -6,11 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -43,7 +39,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         patientBtn.setOnClickListener(v -> startActivity(new Intent(this, PatientManagementActivity.class)));
 
-        appointmentBtn.setOnClickListener(v -> startActivity(new Intent(this, AppointmentActivity.class)));
+        appointmentBtn.setOnClickListener(v -> startActivity(new Intent(this, AppointmentManagementActivity.class)));
 
         logoutBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, MainActivity.class));

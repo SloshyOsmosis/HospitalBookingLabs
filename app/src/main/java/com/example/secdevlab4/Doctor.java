@@ -38,6 +38,10 @@ public class Doctor {
         this.lname = name;
     }
 
+    public String getFullName() {
+        return fname + " " + lname;
+    }
+
     public String getSpecialty() {
         return specialty;
     }

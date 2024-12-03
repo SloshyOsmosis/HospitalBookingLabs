@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     EditText etEmail, etPass, etRepass, etfName, etlName;
     Button btnRegister, btnLogin;
     DBHelper dbHelper;
@@ -33,7 +33,7 @@ public class Register extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Register.this, MainActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -47,26 +47,26 @@ public class Register extends AppCompatActivity {
             lname = etlName.getText().toString();
 
             if (email.isEmpty() || pass.isEmpty() || repass.isEmpty() || fname.isEmpty() || lname.isEmpty()) {
-                Toast.makeText(Register.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
             } else {
                 if(pass.equals(repass)) {
                     //Checks the database to see if the user already exists
                     if (dbHelper.checkUserEmail(email)){
-                        Toast.makeText(Register.this, "User already exists", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "User already exists", Toast.LENGTH_LONG).show();
                         return;
                     }
                     //Continues with registration if both password and retype password fields are matching.
                     boolean registeredSuccess = dbHelper.insertData(fname, lname, email,pass);
                     if (registeredSuccess) {
-                        Toast.makeText(Register.this, "User registered Successfully", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "User registered Successfully", Toast.LENGTH_LONG).show();
                         //Ends the activity and takes the user back to the login page.
                         finish();
                     }
                     else {
-                        Toast.makeText(Register.this, "User registration Failed. Please try again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "User registration Failed. Please try again.", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(Register.this, "Passwords do not match.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_LONG).show();
                 }
             }
         });

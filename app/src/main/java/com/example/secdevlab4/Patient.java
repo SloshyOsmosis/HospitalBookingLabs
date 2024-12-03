@@ -38,6 +38,10 @@ public class Patient {
         this.lname = name;
     }
 
+    public String getFullName() {
+        return fname + " " + lname;
+    }
+
     public int getAge() {
         return age;
     }
