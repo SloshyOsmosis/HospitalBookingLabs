@@ -2,6 +2,7 @@ package com.example.secdevlab4;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,26 +50,43 @@ public class RegisterActivity extends AppCompatActivity {
             if (email.isEmpty() || pass.isEmpty() || repass.isEmpty() || fname.isEmpty() || lname.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
             } else {
-                if(pass.equals(repass)) {
-                    //Checks the database to see if the user already exists
-                    if (dbHelper.checkUserEmail(email)){
+                if (!isValidEmail(email)) {
+                    Toast.makeText(RegisterActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                } else if (!isValidPassword(pass)) {
+                    Toast.makeText(RegisterActivity.this, "Password must be at least 8 characters long, at least one uppercase letter, one number, and one special character.", Toast.LENGTH_LONG).show();
+                } else if (!pass.equals(repass)) {
+                    Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_LONG).show();
+                } else {
+                    // Checks the database to see if the user already exists
+                    if (dbHelper.checkUserEmail(email)) {
                         Toast.makeText(RegisterActivity.this, "User already exists", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    //Continues with registration if both password and retype password fields are matching.
-                    boolean registeredSuccess = dbHelper.insertData(fname, lname, email,pass);
+                    // Continues with registration if validation passes
+                    boolean registeredSuccess = dbHelper.insertData(fname, lname, email, pass);
                     if (registeredSuccess) {
                         Toast.makeText(RegisterActivity.this, "User registered Successfully", Toast.LENGTH_LONG).show();
-                        //Ends the activity and takes the user back to the login page.
+                        // Ends the activity and takes the user back to the login page.
                         finish();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(RegisterActivity.this, "User registration Failed. Please try again.", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+    // Method to validate email
+    private boolean isValidEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    // Method to validate password
+    private boolean isValidPassword(String password) {
+        // Password must have at least 8 characters, at least one uppercase letter, one lowercase letter, one number, and one special character
+        return password.length() >= 8 &&
+                password.matches(".*[A-Z].*") &&
+                password.matches(".*[a-z].*") &&
+                password.matches(".*\\d.*") &&
+                password.matches(".*[@#$%^&+=!.].*");
     }
 }

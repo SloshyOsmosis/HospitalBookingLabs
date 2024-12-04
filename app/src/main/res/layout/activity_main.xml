@@ -11,11 +11,12 @@
         android:id="@+id/createButton"
         android:layout_width="218dp"
         android:layout_height="59dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="116dp"
         android:text="Login"
         android:textSize="24sp"
         app:backgroundTint="#3aa8c1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rePassRegEditText" />
 
@@ -53,24 +54,12 @@
         android:id="@+id/registerButton"
         android:layout_width="218dp"
         android:layout_height="59dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="192dp"
         android:text="Register"
-        app:backgroundTint="#3aa8c1"
         android:textSize="24sp"
+        app:backgroundTint="#3aa8c1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rePassRegEditText" />
-
-    <TextView
-        android:id="@+id/forgotPasswordText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgotten pasword?"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.788"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rePassRegEditText" />
 
@@ -87,4 +76,15 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/forgotButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="Forgot Password?"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/rePassRegEditText"
+        app:layout_constraintTop_toBottomOf="@+id/rePassRegEditText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

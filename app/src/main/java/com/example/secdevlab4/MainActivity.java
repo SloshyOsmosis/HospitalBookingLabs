@@ -13,9 +13,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     DBHelper dbHelper;
-    Button btnLogin, btnRegister;
+    Button btnLogin, btnRegister, btnForgot;
     EditText etUsername, etPassword;
-    TextView forgotText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,15 @@ public class MainActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.registerButton);
         etUsername = findViewById(R.id.emailRegEditText);
         etPassword = findViewById(R.id.rePassRegEditText);
-        forgotText = findViewById(R.id.forgotPasswordText);
+        btnForgot = findViewById(R.id.forgotButton);
+
+        btnForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override

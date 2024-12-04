@@ -6,8 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -54,6 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
+    // Create database tables
     @Override
     public void onCreate(SQLiteDatabase db) {
         //User Table
@@ -93,6 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CreateAppointmentsTable);
     }
 
+    // Upgrade database tables
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
@@ -102,6 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // Insert patient data into the database
     public boolean insertPatient(String fName, String lName, int age, String gender) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -113,6 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // Insert doctor data into the database
     public boolean insertDoctor(String fName, String lName, String specialty) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -123,6 +131,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // Insert user data into the database
     public boolean insertData(String fName, String lName, String email, String password){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -134,9 +143,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // Resets the user's password
+    public boolean updatePassword(String email, String password){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PASSWORD, password);
+        long result = myDB.update(TABLE_USERS, contentValues, COLUMN_EMAIL + "=?", new String[] {email});
+        return result != -1;
+    }
+    // Insert appointment data into the database
     public boolean insertAppointment(int patientId, int doctorId, String date, String time, String reason){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+
         contentValues.put(COLUMN_APPOINTMENT_PATIENT_ID, patientId);
         contentValues.put(COLUMN_APPOINTMENT_DOCTOR_ID, doctorId);
         contentValues.put(COLUMN_APPOINTMENT_DATE, date);
@@ -146,6 +165,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    // Check if user exists in the database
     public boolean checkUser(String email, String password){
         SQLiteDatabase myDB = this.getWritableDatabase();
         Cursor cursor = myDB.rawQuery("select * from " + TABLE_USERS + " where email=? and password=?", new String[]{email,password});
@@ -153,6 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return exists;
     }
+    // Check if user exists in the database
     public boolean checkUserEmail(String email){
         SQLiteDatabase myDB = this.getWritableDatabase();
         Cursor cursor = myDB.rawQuery("select * from " + TABLE_USERS + " where email=?", new String[]{email});
@@ -161,20 +182,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-
-    public String getUserName(int userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT fName, lName FROM users WHERE id=?", new String[]{String.valueOf(userId)});
-
-        String userName = "User"; // Default name
-        if (cursor.moveToFirst()) {
-            String fName = cursor.getString(cursor.getColumnIndexOrThrow("fName"));
-            String lName = cursor.getString(cursor.getColumnIndexOrThrow("lName"));
-            userName = fName + " " + lName;
-        }
-        cursor.close();
-        return userName;
-    }
     public List<Patient> getPatients() {
         List<Patient> patients = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -321,5 +328,47 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase myDB = this.getWritableDatabase();
         int result = myDB.delete(TABLE_APPOINTMENTS, COLUMN_APPOINTMENT_ID + "=?", new String[]{String.valueOf(appointmentId)});
         return result > 0;
+    }
+
+    //Che
+    public boolean checkAppointmentConflict(int doctorId, String date, String time) {
+        SQLiteDatabase myDB = this.getReadableDatabase();
+
+        String startTime = time;
+        String endTime = getAppointmentTime(time);
+
+        String query = "SELECT * FROM " + TABLE_APPOINTMENTS +
+                " WHERE " + COLUMN_APPOINTMENT_DOCTOR_ID + " = ? " +
+                " AND " + COLUMN_APPOINTMENT_DATE + " = ? " +
+                " AND ((" + COLUMN_APPOINTMENT_TIME + " BETWEEN ? AND ?) " +
+                " OR (? BETWEEN " + COLUMN_APPOINTMENT_TIME + " AND ?))";
+
+        String[] args = new String[] {
+                String.valueOf(doctorId),
+                date,
+                startTime, // Start time of new appointment
+                endTime,   // End time of new appointment (15 minutes after start)
+                startTime, // Start time of new appointment
+                endTime    // End time of new appointment
+        };
+        Cursor cursor = myDB.rawQuery(query, args);
+
+        boolean hasConflict = cursor.getCount() > 0;
+        cursor.close();
+        return hasConflict;
+    }
+
+    private String getAppointmentTime(String startTime) {
+        String[] timeParts = startTime.split(":");
+        int hours = Integer.parseInt(timeParts[0]);
+        int minutes = Integer.parseInt(timeParts[1]);
+
+        minutes += 15; //Appointments cannot be within 15 minutes of eachother
+
+        if (minutes >= 60) {
+            minutes -= 60;
+            hours += 1;
+        }
+        return String.format("%02d:%02d", hours, minutes);
     }
 }

@@ -24,16 +24,8 @@ public class DashboardActivity extends AppCompatActivity {
         patientBtn = findViewById(R.id.patientBtn);
         appointmentBtn = findViewById(R.id.appointmentBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
-        greetingsTextView = findViewById(R.id.greetingsTextView);
 
         myDB = new DBHelper(this);
-
-        userId = getIntent().getIntExtra("userId", -1);
-
-        if (userId != -1) {
-            String userName = myDB.getUserName(userId); // Fetch user's name
-            greetingsTextView.setText("Welcome, " + userName + "!");
-        }
 
         drBtn.setOnClickListener(v -> startActivity(new Intent(this, DoctorManagementActivity.class)));
 
