@@ -187,7 +187,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
         }
     }
 
-    private void addAppointmentToDatabase(){
+    private void addAppointmentToDatabase() {
         // Retrieve input values
         String reason = editTextReason.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
@@ -213,14 +213,21 @@ public class AddAppointmentActivity extends AppCompatActivity {
             return;
         }
 
+        try {
+            String encryptedReason = AESHelper.encrypt(reason);
+            boolean result = myDB.insertAppointment(patientId, doctorId, date, time, encryptedReason);
+            if (result) {
+                Toast.makeText(this, "Appointment added successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                // Handle the error
+                Toast.makeText(this, "Failed to add appointment", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            // Handle encryption error
+            Toast.makeText(this, "Error encrypting reason", Toast.LENGTH_SHORT).show();
+    }
         // Insert data into the database
-        boolean result = myDB.insertAppointment(patientId, doctorId, date, time, reason);
-        if (result) {
-            Toast.makeText(this, "Appointment added successfully", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            // Handle the error
-            Toast.makeText(this, "Failed to add appointment", Toast.LENGTH_SHORT).show();
-        }
+
     }
 }

@@ -70,7 +70,16 @@ public class AppointmentCustomAdapter extends BaseAdapter {
         if (patient != null) {
             patientNameTextView.setText("Patient Name: " + patient.getFName() + " " + patient.getLName());
             patientAgeTextView.setText("Age: " + patient.getAge());
-            patientGenderTextView.setText("Gender: " + patient.getGender());
+
+            // Decrypt the gender using AES
+            String decryptedGender = "";
+            try {
+                decryptedGender = AESHelper.decrypt(patient.getGender());
+            } catch (Exception e) {
+                e.printStackTrace();
+                decryptedGender = "Unknown";  // Handle decryption error
+            }
+            patientGenderTextView.setText("Gender: " + decryptedGender);
         } else {
             patientNameTextView.setText("Patient Name: Unknown");
             patientAgeTextView.setText("Age: Unknown");

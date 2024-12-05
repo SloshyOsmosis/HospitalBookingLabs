@@ -66,14 +66,22 @@ public class AddPatientActivity extends AppCompatActivity {
             return;
         }
 
-        // Insert data into the database
-        boolean result = myDB.insertPatient(fName, lName, age, gender);
-        if (result) {
-            Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity and return to the previous screen
-        } else {
-            // Handle the case where the insertion failed
-            Toast.makeText(this, "Failed to add patient", Toast.LENGTH_SHORT).show();
+        try {
+            // Encrypt the gender using AES
+            String encryptedGender = AESHelper.encrypt(gender);
+
+            // Insert data into the database
+            boolean result = myDB.insertPatient(fName, lName, age, encryptedGender);
+            if (result) {
+                Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
+                finish(); // Close the activity and return to the previous screen
+            } else {
+                // Handle the case where the insertion failed
+                Toast.makeText(this, "Failed to add patient", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            // Handle encryption error
+            Toast.makeText(this, "Error encrypting gender", Toast.LENGTH_SHORT).show();
         }
     }
 }

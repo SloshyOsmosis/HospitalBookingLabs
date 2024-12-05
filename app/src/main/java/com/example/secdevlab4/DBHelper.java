@@ -112,13 +112,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Insert patient data into the database
-    public boolean insertPatient(String fName, String lName, int age, String gender) {
+    public boolean insertPatient(String fName, String lName, int age, String encryptedGender) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_PATIENT_FNAME, fName);
         contentValues.put(COLUMN_PATIENT_LNAME, lName);
         contentValues.put(COLUMN_PATIENT_AGE, age);
-        contentValues.put(COLUMN_PATIENT_GENDER, gender);
+        contentValues.put(COLUMN_PATIENT_GENDER, encryptedGender); // Insert encrypted gender
         long result = myDB.insert(TABLE_PATIENTS, null, contentValues);
         return result != -1;
     }
@@ -147,17 +147,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Resets the user's password
-    public boolean updatePassword(String email, String password, String salt){
-        SQLiteDatabase myDB = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_PASSWORD, password);
-        contentValues.put(COLUMN_SALT, salt);
-        long result = myDB.update(TABLE_USERS, contentValues, COLUMN_EMAIL + "=?", new String[] {email});
-        return result != -1;
-    }
     // Insert appointment data into the database
-    public boolean insertAppointment(int patientId, int doctorId, String date, String time, String reason){
+    public boolean insertAppointment(int patientId, int doctorId, String date, String time, String encryptedReason){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -165,8 +156,18 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_APPOINTMENT_DOCTOR_ID, doctorId);
         contentValues.put(COLUMN_APPOINTMENT_DATE, date);
         contentValues.put(COLUMN_APPOINTMENT_TIME, time);
-        contentValues.put(COLUMN_APPOINTMENT_REASON, reason);
+        contentValues.put(COLUMN_APPOINTMENT_REASON, encryptedReason);
         long result = myDB.insert(TABLE_APPOINTMENTS, null, contentValues);
+        return result != -1;
+    }
+
+    // Resets the user's password
+    public boolean updatePassword(String email, String password, String salt){
+        SQLiteDatabase myDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PASSWORD, password);
+        contentValues.put(COLUMN_SALT, salt);
+        long result = myDB.update(TABLE_USERS, contentValues, COLUMN_EMAIL + "=?", new String[] {email});
         return result != -1;
     }
 
@@ -202,13 +203,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
+                // Decrypt gender
+                String encryptedGender = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PATIENT_GENDER));
+                String gender = "";
+                try {
+                    gender = AESHelper.decrypt(encryptedGender);
+                } catch (Exception e) {
+                    gender = "Error decrypting gender";
+                    e.printStackTrace();
+                }
 
                 patients.add(new Patient(
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PATIENT_ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PATIENT_FNAME)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PATIENT_LNAME)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PATIENT_AGE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PATIENT_GENDER))
+                        gender  // Decrypted gender
                 ));
             } while (cursor.moveToNext());
         }
@@ -242,21 +252,36 @@ public class DBHelper extends SQLiteOpenHelper {
         List<Appointment> appointments = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_APPOINTMENTS, null);
+
         if (cursor.moveToFirst()) {
             do {
+                // Decrypt the appointment reason
+                String encryptedReason = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_REASON));
+                String reason = "";
+
+                try {
+                    reason = AESHelper.decrypt(encryptedReason);
+                } catch (Exception e) {
+                    // Handle decryption error
+                    reason = "Error decrypting reason";
+                    e.printStackTrace();
+                }
+
+                // Add appointment to the list, use decrypted reason
                 appointments.add(new Appointment(
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_ID)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_PATIENT_ID)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_DOCTOR_ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_DATE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_TIME)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_REASON))
+                        reason // Use the decrypted reason here
                 ));
             } while (cursor.moveToNext());
         }
         cursor.close();
         return appointments;
     }
+
 
     // Get patient by ID
     public Patient getPatientById(int patientId) {
