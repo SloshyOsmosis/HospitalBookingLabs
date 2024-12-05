@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     DBHelper dbHelper;
     Button btnLogin, btnRegister, btnForgot;
-    EditText etUsername, etPassword;
+    EditText etEmail, etPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         btnLogin = findViewById(R.id.createButton);
         btnRegister = findViewById(R.id.registerButton);
-        etUsername = findViewById(R.id.emailRegEditText);
+        etEmail = findViewById(R.id.emailRegEditText);
         etPassword = findViewById(R.id.rePassRegEditText);
         btnForgot = findViewById(R.id.forgotButton);
 
@@ -45,12 +45,21 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isLogged = dbHelper.checkUser(etUsername.getText().toString().trim(), etPassword.getText().toString().trim());
-                if (isLogged){
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                boolean isLogged = dbHelper.checkUser(email, password);
+                if (isLogged) {
                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                     startActivity(intent);
-                } else
-                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

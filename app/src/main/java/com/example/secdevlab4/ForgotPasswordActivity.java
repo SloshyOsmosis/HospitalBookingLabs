@@ -35,7 +35,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         updatePassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                resetPassword();
             }
         });
     }
@@ -64,6 +64,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         boolean isUpdated = myDB.updatePassword(email, newPassword);
         if (isUpdated) {
             Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show();
+            finish();
         } else {
             Toast.makeText(this, "Password update failed. Please try again.", Toast.LENGTH_SHORT).show();
         }

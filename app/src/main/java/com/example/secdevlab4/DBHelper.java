@@ -26,6 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_LNAME = "lName";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_SALT = "salt";
 
     //Patient Table
     private static final String TABLE_PATIENTS = "patients";
@@ -67,7 +68,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_FNAME + " TEXT, "
                 + COLUMN_LNAME + " TEXT, "
                 + COLUMN_EMAIL + " TEXT UNIQUE, "
-                + COLUMN_PASSWORD + " TEXT)";
+                + COLUMN_PASSWORD + " TEXT, "
+                + COLUMN_SALT + " TEXT)";
+
 
         String CreatePatientsTable = "CREATE TABLE " + TABLE_PATIENTS + "("
                 + COLUMN_PATIENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -90,7 +93,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_APPOINTMENT_TIME + " TEXT, "
                 + COLUMN_APPOINTMENT_REASON + " TEXT,"
                 + "FOREIGN KEY(" + COLUMN_APPOINTMENT_PATIENT_ID + ") REFERENCES " + TABLE_PATIENTS + "(" + COLUMN_PATIENT_ID + ") ON DELETE CASCADE, "
-                + "FOREIGN KEY(" + COLUMN_APPOINTMENT_DOCTOR_ID + ") REFERENCES " + TABLE_DOCTORS + "(" + COLUMN_DOCTOR_ID + ") ON DELETE CASCADE)"; // Add foreign key constraint
+                + "FOREIGN KEY(" + COLUMN_APPOINTMENT_DOCTOR_ID + ") REFERENCES " + TABLE_DOCTORS + "(" + COLUMN_DOCTOR_ID + ") ON DELETE CASCADE)"; // Add foreign keys
 
         db.execSQL(CreateUsersTable);
         db.execSQL(CreatePatientsTable);
@@ -132,13 +135,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Insert user data into the database
-    public boolean insertData(String fName, String lName, String email, String password){
+    public boolean insertData(String fName, String lName, String email, String password, String salt){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_FNAME, fName);
         contentValues.put(COLUMN_LNAME, lName);
         contentValues.put(COLUMN_EMAIL, email);
         contentValues.put(COLUMN_PASSWORD, password);
+        contentValues.put(COLUMN_SALT, salt);
         long result = myDB.insert(TABLE_USERS, null, contentValues);
         return result != -1;
     }
@@ -167,11 +171,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Check if user exists in the database
     public boolean checkUser(String email, String password){
-        SQLiteDatabase myDB = this.getWritableDatabase();
-        Cursor cursor = myDB.rawQuery("select * from " + TABLE_USERS + " where email=? and password=?", new String[]{email,password});
-        boolean exists = cursor.getCount() > 0;
-        cursor.close();
-        return exists;
+        SQLiteDatabase myDB = this.getReadableDatabase();
+        Cursor cursor = myDB.query(TABLE_USERS, new String[]{COLUMN_PASSWORD, COLUMN_SALT}, COLUMN_EMAIL + "=?", new String[]{email}, null,null,null);
+        if (cursor.moveToFirst()) {
+            String storedPasswordHash = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD));
+            String storedSalt = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SALT));
+            cursor.close();
+
+            String hashedPassword = HashingHelper.hashPassword(password, storedSalt);
+            return hashedPassword.equals(storedPasswordHash);
+        } else {
+            return false;
+        }
     }
     // Check if user exists in the database
     public boolean checkUserEmail(String email){
@@ -305,6 +316,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_APPOINTMENT_DATE, date);
         contentValues.put(COLUMN_APPOINTMENT_TIME, time);
         contentValues.put(COLUMN_APPOINTMENT_REASON, reason);
+
         int result = myDB.update(TABLE_APPOINTMENTS, contentValues, COLUMN_APPOINTMENT_ID + "=?", new String[]{String.valueOf(appointmentId)});
         return result > 0;
     }
@@ -347,9 +359,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String.valueOf(doctorId),
                 date,
                 startTime, // Start time of new appointment
-                endTime,   // End time of new appointment (15 minutes after start)
-                startTime, // Start time of new appointment
-                endTime    // End time of new appointment
+                endTime   // End time of new appointment (15 minutes after start)
         };
         Cursor cursor = myDB.rawQuery(query, args);
 

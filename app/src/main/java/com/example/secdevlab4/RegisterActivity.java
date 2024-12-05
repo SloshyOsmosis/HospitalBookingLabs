@@ -62,8 +62,12 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "User already exists", Toast.LENGTH_LONG).show();
                         return;
                     }
+
+                    String salt = HashingHelper.generateSalt();
+                    String hashedPassword = HashingHelper.hashPassword(pass, salt);
+
                     // Continues with registration if validation passes
-                    boolean registeredSuccess = dbHelper.insertData(fname, lname, email, pass);
+                    boolean registeredSuccess = dbHelper.insertData(fname, lname, email, hashedPassword, salt);
                     if (registeredSuccess) {
                         Toast.makeText(RegisterActivity.this, "User registered Successfully", Toast.LENGTH_LONG).show();
                         // Ends the activity and takes the user back to the login page.
