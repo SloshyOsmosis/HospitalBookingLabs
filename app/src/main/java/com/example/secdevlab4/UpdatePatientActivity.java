@@ -33,6 +33,7 @@ public class UpdatePatientActivity extends AppCompatActivity {
         buttonUpdatePatient = findViewById(R.id.buttonUpdatePatient);
 
         myDB = new DBHelper(this);
+        // Populating the spinner with patient genders
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.gender_array,
@@ -53,6 +54,7 @@ public class UpdatePatientActivity extends AppCompatActivity {
         editTextLastName.setText(lastName);
         editTextAge.setText(String.valueOf(age));
 
+        // Set the selected gender in the spinner
         if (gender != null) {
             int genderPosition = getGenderPosition(gender);
             spinnerGender.setSelection(genderPosition);
@@ -61,7 +63,9 @@ public class UpdatePatientActivity extends AppCompatActivity {
         buttonUpdatePatient.setOnClickListener(v -> updatePatientInDatabase());// Updates patient in database on button press
     }
 
+    // Helper method to get the position of a gender in the spinner
     private int getGenderPosition(String gender) {
+        // Get the array of genders from the string resource
         String[] genders = getResources().getStringArray(R.array.gender_array);
         for (int i = 0; i < genders.length; i++) {
             if (genders[i].equals(gender)) {
@@ -71,22 +75,28 @@ public class UpdatePatientActivity extends AppCompatActivity {
         return 0; // Default to the first position if not found
     }
 
+    // Updates the patient in the database
     private void updatePatientInDatabase() {
         String fName = editTextFirstName.getText().toString().trim();
         String lName = editTextLastName.getText().toString().trim();
         int age = Integer.parseInt(editTextAge.getText().toString().trim());
         String gender = spinnerGender.getSelectedItem().toString().trim();
 
+        // Check if any fields are empty
         if (fName.isEmpty() || lName.isEmpty() || age <= 0 || gender.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Update the patient in the database
         boolean result = myDB.updatePatient(patientId, fName, lName, age, gender);
         if (result) {
+            // Show a success message if the update is successful
             Toast.makeText(this, "Patient updated successfully", Toast.LENGTH_SHORT).show();
             finish(); //Return to the previous screen
-        } else {
+        }
+        // Show a failure message if the update fails
+        else {
             Toast.makeText(this, "Failed to update patient", Toast.LENGTH_SHORT).show();
         }
     }

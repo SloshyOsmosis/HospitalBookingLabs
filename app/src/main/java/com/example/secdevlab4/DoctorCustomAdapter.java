@@ -20,21 +20,25 @@ public class DoctorCustomAdapter extends BaseAdapter {
     }
 
     @Override
+    // Get the number of doctors
     public int getCount() {
         return doctorList.size();
     }
 
     @Override
+    // Get the doctor at the given position
     public Object getItem(int position) {
         return doctorList.get(position);
     }
 
     @Override
+    // Get the ID of the doctor
     public long getItemId(int position) {
         return doctorList.get(position).getId();
     }
 
     @Override
+    // Create a new view for each item in the list
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.doctor_item, parent, false);

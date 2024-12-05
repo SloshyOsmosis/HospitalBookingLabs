@@ -30,6 +30,7 @@ public class AddPatientActivity extends AppCompatActivity {
 
         myDB = new DBHelper(this);
 
+        // Set up the spinner adapter, populate with gender options.
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(
                 this, R.array.gender_array, android.R.layout.simple_spinner_item);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -43,6 +44,7 @@ public class AddPatientActivity extends AppCompatActivity {
         });
     }
 
+    // Helper method to add patient to the database
     private void addPatientToDatabase() {
         // Retrieve input values
         String fName = editTextFirstName.getText().toString().trim();
@@ -70,6 +72,7 @@ public class AddPatientActivity extends AppCompatActivity {
             Toast.makeText(this, "Patient added successfully", Toast.LENGTH_SHORT).show();
             finish(); // Close the activity and return to the previous screen
         } else {
+            // Handle the case where the insertion failed
             Toast.makeText(this, "Failed to add patient", Toast.LENGTH_SHORT).show();
         }
     }

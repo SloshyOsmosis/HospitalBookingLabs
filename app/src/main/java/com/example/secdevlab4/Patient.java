@@ -7,6 +7,7 @@ public class Patient {
     private int age;
     private String gender;
 
+    // Constructor
     public Patient(int id, String fname,String lname, int age, String gender) {
         this.id = id;
         this.fname = fname;
@@ -18,6 +19,7 @@ public class Patient {
     public int getId(){
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -26,16 +28,8 @@ public class Patient {
         return fname;
     }
 
-    public void setFName(String name) {
-        this.fname = name;
-    }
-
     public String getLName() {
         return lname;
-    }
-
-    public void setLName(String name) {
-        this.lname = name;
     }
 
     public String getFullName() {
@@ -53,9 +47,4 @@ public class Patient {
     public String getGender() {
         return gender;
     }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
 }

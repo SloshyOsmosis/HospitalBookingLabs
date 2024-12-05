@@ -30,6 +30,7 @@ public class DoctorManagementActivity extends AppCompatActivity {
         doctorList = findViewById(R.id.doctorList);
         add_doctor = findViewById(R.id.add_doctor);
 
+        // Navigate to AddDoctorActivity when clicked
         add_doctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,10 +44,12 @@ public class DoctorManagementActivity extends AppCompatActivity {
 
         doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+            // Navigate to UpdateDoctorActivity when clicked
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Doctor selectedDoctor = (Doctor) customAdapter.getItem(position);
 
                 Intent intent = new Intent(DoctorManagementActivity.this, UpdateDoctorActivity.class);
+                // Pass doctor details to UpdateDoctorActivity
                 intent.putExtra("doctorId", selectedDoctor.getId());
                 intent.putExtra("firstName", selectedDoctor.getFName());
                 intent.putExtra("lastName", selectedDoctor.getLName());
@@ -61,11 +64,13 @@ public class DoctorManagementActivity extends AppCompatActivity {
                 // Selected doctor is chosen
                 Doctor selectedDoctor = (Doctor) customAdapter.getItem(position);
 
+                // Show a confirmation dialog before deleting
                 new AlertDialog.Builder(DoctorManagementActivity.this)
                         .setTitle("Delete Doctor")
                         .setMessage("Are you sure you want to delete this doctor?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
+                            // Delete the selected doctor if confirmed
                             public void onClick(DialogInterface dialog, int which) {
                                 boolean result = myDB.deleteDoctor(selectedDoctor.getId());
                                 if (result) {
@@ -76,19 +81,23 @@ public class DoctorManagementActivity extends AppCompatActivity {
                                 }
                             }
                         })
+                        // Cancel the deletion if not confirmed
                         .setNegativeButton("No", null)
                         .show();
                 return true;
             }
         });
     }
+    // Load doctors when the activity is resumed
     @Override
     protected void onResume() {
         super.onResume();
         loadDoctor();
     }
 
+    // Helper method to load doctors from the database
     private void loadDoctor() {
+        // Get doctors from the database
         List<Doctor> doctors = myDB.getDoctors();
         customAdapter = new DoctorCustomAdapter(this, doctors);
         doctorList.setAdapter(customAdapter);

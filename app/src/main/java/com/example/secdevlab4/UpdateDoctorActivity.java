@@ -33,6 +33,7 @@ public class UpdateDoctorActivity extends AppCompatActivity {
         buttonUpdateDoctor = findViewById(R.id.buttonUpdateDoctor);
 
         myDB = new DBHelper(this);
+        // Populating the spinner with doctor specialties
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.doctor_array,
@@ -70,23 +71,30 @@ public class UpdateDoctorActivity extends AppCompatActivity {
         return 0; // Default to the first position if not found
     }
 
+    // Updates the doctor in the database
     private void updateDoctorInDatabase() {
         String fName = editTextFirstName.getText().toString().trim();
         String lName = editTextLastName.getText().toString().trim();
         String specialty = spinnerSpecialty.getSelectedItem().toString().trim();
 
+        // Check if any fields are empty
         if (fName.isEmpty() || lName.isEmpty() || specialty.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Update the doctor in the database
         boolean result = myDB.updateDoctor(doctorId, fName, lName, specialty);
 
+
         if (result) {
+            // Show a success message if the update is successful
             Toast.makeText(this, "Doctor updated successfully", Toast.LENGTH_SHORT).show();
             finish(); //Return to the previous screen
 
-            } else {
+            }
+        // Show a failure message if the update fails
+        else {
             Toast.makeText(this, "Failed to update doctor", Toast.LENGTH_SHORT).show();
         }
     }

@@ -11,9 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class DashboardActivity extends AppCompatActivity {
 
     Button drBtn, patientBtn, appointmentBtn, logoutBtn;
-    TextView greetingsTextView;
     DBHelper myDB;
-    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

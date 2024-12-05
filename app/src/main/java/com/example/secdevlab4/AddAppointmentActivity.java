@@ -197,6 +197,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
         Patient selectedPatient = (Patient) spinnerPatient.getSelectedItem();
         Doctor selectedDoctor = (Doctor) spinnerDoctor.getSelectedItem();
 
+        // Check if fields are empty
         if (reason.isEmpty() || date.isEmpty() || time.isEmpty() || selectedPatient == null || selectedDoctor == null) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
@@ -206,6 +207,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
         int patientId = selectedPatient.getId();
         int doctorId = selectedDoctor.getId();
 
+        // Check for appointment conflict
         if (myDB.checkAppointmentConflict(doctorId, date, time)) {
             Toast.makeText(this, "Error: Doctor already has an appointment within 15 minutes.", Toast.LENGTH_LONG).show();
             return;
@@ -217,6 +219,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
             Toast.makeText(this, "Appointment added successfully", Toast.LENGTH_SHORT).show();
             finish();
         } else {
+            // Handle the error
             Toast.makeText(this, "Failed to add appointment", Toast.LENGTH_SHORT).show();
         }
     }

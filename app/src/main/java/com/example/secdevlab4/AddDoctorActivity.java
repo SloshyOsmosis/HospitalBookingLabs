@@ -33,6 +33,7 @@ public class AddDoctorActivity extends AppCompatActivity {
 
         myDB = new DBHelper(this);
 
+        // Set up the spinner adapter, populate with doctor specialties.
         ArrayAdapter<CharSequence> specialtyAdapter = ArrayAdapter.createFromResource(
                 this, R.array.doctor_array, android.R.layout.simple_spinner_item);
         specialtyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -46,6 +47,7 @@ public class AddDoctorActivity extends AppCompatActivity {
         });
     }
 
+    // Helper method to add doctor to the database
     private void addDoctorToDatabase() {
         // Retrieve input values
         String fName = editTextFirstName.getText().toString().trim();
@@ -64,6 +66,7 @@ public class AddDoctorActivity extends AppCompatActivity {
             Toast.makeText(this, "Doctor added successfully", Toast.LENGTH_SHORT).show();
             finish(); // Close the activity and return to the previous screen
         } else {
+            // Handle the case where the insertion failed
             Toast.makeText(this, "Failed to add doctor", Toast.LENGTH_SHORT).show();
         }
     }

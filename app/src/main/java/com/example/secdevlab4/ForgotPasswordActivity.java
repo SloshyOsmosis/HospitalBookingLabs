@@ -34,12 +34,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         updatePassButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            // Reset the password when the button is clicked
             public void onClick(View v) {
                 resetPassword();
             }
         });
     }
 
+    // Helper method to reset the password
     private void resetPassword() {
         String email = editTextEmailAddress.getText().toString().trim();
         String newPassword = editTextNewPassword.getText().toString().trim();
@@ -61,11 +63,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             return;
         }
 
-        boolean isUpdated = myDB.updatePassword(email, newPassword);
+        // Hash the new password with a new salt
+        String salt = HashingHelper.generateSalt();
+        String hashedNewPassword = HashingHelper.hashPassword(newPassword, salt);
+
+        // Update the password
+        boolean isUpdated = myDB.updatePassword(email, hashedNewPassword, salt);
         if (isUpdated) {
             Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show();
+            // Ends the activity and takes the user back to the login page
             finish();
         } else {
+            // Shows an error message if the password update fails
             Toast.makeText(this, "Password update failed. Please try again.", Toast.LENGTH_SHORT).show();
         }
 

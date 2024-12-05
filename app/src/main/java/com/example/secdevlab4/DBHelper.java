@@ -148,10 +148,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Resets the user's password
-    public boolean updatePassword(String email, String password){
+    public boolean updatePassword(String email, String password, String salt){
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_PASSWORD, password);
+        contentValues.put(COLUMN_SALT, salt);
         long result = myDB.update(TABLE_USERS, contentValues, COLUMN_EMAIL + "=?", new String[] {email});
         return result != -1;
     }
@@ -193,6 +194,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return exists;
     }
 
+    // Get patients from the database
     public List<Patient> getPatients() {
         List<Patient> patients = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -214,6 +216,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return patients;
     }
 
+    // Get doctors from the database
     public List<Doctor> getDoctors() {
         List<Doctor> doctors = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -234,6 +237,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return doctors;
     }
 
+    // Get appointments from the database
     public List<Appointment> getAppointments() {
         List<Appointment> appointments = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -254,6 +258,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return appointments;
     }
 
+    // Get patient by ID
     public Patient getPatientById(int patientId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PATIENTS + " WHERE id=?", new String[]{String.valueOf(patientId)});
@@ -270,6 +275,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return patient;
     }
 
+    // Get doctor by ID
     public Doctor getDoctorById(int doctorId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DOCTORS + " WHERE id=?", new String[]{String.valueOf(doctorId)});
@@ -285,6 +291,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return doctor;
     }
 
+    // Updates the patient in the database
     public boolean updatePatient(int patientId, String firstName, String lastName, int age, String gender) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -297,6 +304,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
+    // Updates the doctor in the database
     public boolean updateDoctor(int doctorId, String firstName, String lastName, String specialty) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -308,6 +316,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
+    // Updates the appointment in the database
     public boolean updateAppointment(int appointmentId, int patientId, int doctorId, String date, String time, String reason) {
         SQLiteDatabase myDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -342,7 +351,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
-    //Che
+    // Check for appointment conflicts
     public boolean checkAppointmentConflict(int doctorId, String date, String time) {
         SQLiteDatabase myDB = this.getReadableDatabase();
 
@@ -368,6 +377,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return hasConflict;
     }
 
+    // Helper method to get the start time of an appointment
     private String getAppointmentTime(String startTime) {
         String[] timeParts = startTime.split(":");
         int hours = Integer.parseInt(timeParts[0]);

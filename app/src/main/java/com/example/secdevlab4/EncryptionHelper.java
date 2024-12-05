@@ -7,7 +7,9 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 
 public class EncryptionHelper {
+    // AES encryption
     private static final String AES = "AES";
+
 
     public static String encrypt(String data, String key) throws Exception {
         SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), AES);

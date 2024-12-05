@@ -33,12 +33,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
+            // Takes the user back to the login page
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
+        // Registers the user
         btnRegister.setOnClickListener(view -> {
             String fname, lname, email, pass, repass;
             email = etEmail.getText().toString();
@@ -47,22 +49,31 @@ public class RegisterActivity extends AppCompatActivity {
             fname = etfName.getText().toString();
             lname = etlName.getText().toString();
 
+            // Validation
+            // Checks if all fields are filled
             if (email.isEmpty() || pass.isEmpty() || repass.isEmpty() || fname.isEmpty() || lname.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
             } else {
+                // Checks if the email is valid
                 if (!isValidEmail(email)) {
                     Toast.makeText(RegisterActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
-                } else if (!isValidPassword(pass)) {
+                }
+                // Checks if the password is valid
+                else if (!isValidPassword(pass)) {
                     Toast.makeText(RegisterActivity.this, "Password must be at least 8 characters long, at least one uppercase letter, one number, and one special character.", Toast.LENGTH_LONG).show();
-                } else if (!pass.equals(repass)) {
+                }
+                // Checks if the passwords match
+                else if (!pass.equals(repass)) {
                     Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else {
                     // Checks the database to see if the user already exists
                     if (dbHelper.checkUserEmail(email)) {
                         Toast.makeText(RegisterActivity.this, "User already exists", Toast.LENGTH_LONG).show();
                         return;
                     }
 
+                    // Hashes the password with a new salt
                     String salt = HashingHelper.generateSalt();
                     String hashedPassword = HashingHelper.hashPassword(pass, salt);
 
@@ -73,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Ends the activity and takes the user back to the login page.
                         finish();
                     } else {
+                        // Shows an error message if registration fails
                         Toast.makeText(RegisterActivity.this, "User registration Failed. Please try again.", Toast.LENGTH_LONG).show();
                     }
                 }

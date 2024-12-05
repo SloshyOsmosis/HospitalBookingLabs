@@ -44,35 +44,42 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
         spinnerDoctor = findViewById(R.id.doctorSpinner);
         buttonUpdateAppointment = findViewById(R.id.buttonUpdateAppointment);
 
+        // Get the appointment ID from the intent
         Intent intent = getIntent();
         appointmentId = intent.getIntExtra("appointmentId", -1);
         String reason = intent.getStringExtra("reason");
         String date = intent.getStringExtra("date");
         String time = intent.getStringExtra("time");
-        int patientId = intent.getIntExtra("patientId", -1);
-        int doctorId = intent.getIntExtra("doctorId", -1);
 
+        // Set the appointment details in the EditText fields
         editTextReason.setText(reason);
         editTextDate.setText(date);
         editTextTime.setText(time);
 
+        myDB = new DBHelper(this);
+
+        // Set up date and time pickers
         editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
 
+                // Get the current date
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
+                // Show the date picker dialog
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
                         UpdateAppointmentActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
+                            // Set the selected date in the EditText
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                                 editTextDate.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
                             }
                         },
+                        // Set the current date as the default date
                         year,
                         month,
                         day
@@ -81,17 +88,21 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
             }
         });
 
+        // Set up time picker
         editTextTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get the current time
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);
 
+                // Show the time picker dialog
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
                         UpdateAppointmentActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
+                            // Set the selected time in the EditText
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                 // Format the time with leading zeros if necessary
                                 String formattedTime = String.format("%02d:%02d", hourOfDay, minute);
@@ -107,7 +118,7 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
             }
         });
 
-        myDB = new DBHelper(this);
+        // Update the appointment in the database when the button is clicked
         buttonUpdateAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +131,7 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
             patientList = myDB.getPatients(); // Get list of patients from the DB
             doctorList = myDB.getDoctors(); // Get list of doctors from the DB
 
+            // For Patient Spinner, display patient's full name (first name + last name)
             ArrayAdapter<Patient> patientAdapter = new ArrayAdapter<>(
                     this, android.R.layout.simple_spinner_item, patientList) {
                 @NonNull
@@ -137,6 +149,7 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
                 }
 
                 @Override
+                // Dropdown view to display full name
                 public View getDropDownView(int position, View convertView, android.view.ViewGroup parent) {
                     // Customize dropdown view to display full name (first and last name)
                     Patient patient = getItem(position);
@@ -149,6 +162,7 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
                     return convertView;
                 }
             };
+            // Set the layout for the dropdown
             patientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerPatient.setAdapter(patientAdapter);
 
@@ -169,6 +183,7 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
                 }
 
                 @Override
+                // Dropdown view to display full name
                 public View getDropDownView(int position, View convertView, android.view.ViewGroup parent) {
                     // Customize dropdown view to display full name (first and last name)
                     Doctor doctor = getItem(position);
@@ -181,35 +196,46 @@ public class UpdateAppointmentActivity extends AppCompatActivity {
                     return convertView;
                 }
             };
+            // Set the layout for the dropdown
             doctorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerDoctor.setAdapter(doctorAdapter);
 
-        } catch (Exception e) {
+        }
+        // Catch any errors
+        catch (Exception e) {
             Toast.makeText(this, "Error loading data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
+    // Updates the appointment in the database
     private void updateAppointmentInDatabase() {
         String reason = editTextReason.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String time = editTextTime.getText().toString().trim();
 
+        // Get the selected patient and doctor from the spinners
         Patient selectedPatient = (Patient) spinnerPatient.getSelectedItem();
         Doctor selectedDoctor = (Doctor) spinnerDoctor.getSelectedItem();
 
-        if (selectedPatient != null && selectedDoctor != null) { // Correct condition
+        if (selectedPatient != null && selectedDoctor != null) {
+            // Get the patient and doctor IDs
             int patientId = selectedPatient.getId();
             int doctorId = selectedDoctor.getId();
 
+            // Update the appointment in the database
             boolean result = myDB.updateAppointment(appointmentId, patientId, doctorId, date, time, reason);
 
+            // Show a success or failure message based on the result
             if (result) {
                 Toast.makeText(this, "Appointment updated successfully", Toast.LENGTH_SHORT).show();
                 finish();
-            } else {
+            }
+            // Show a failure message if the update fails
+            else {
                 Toast.makeText(this, "Failed to update appointment", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        }
+        else {
             Toast.makeText(this, "Please select a patient and a doctor", Toast.LENGTH_SHORT).show(); // Handle case where patient or doctor is not selected
         }
     }

@@ -7,6 +7,7 @@ public class Doctor {
 
     private String specialty;
 
+    // Constructor
     public Doctor(int id, String fname, String lname, String specialty) {
         this.id = id;
         this.fname = fname;
@@ -26,17 +27,11 @@ public class Doctor {
         return fname;
     }
 
-    public void setFName(String name) {
-        this.fname = name;
-    }
 
     public String getLName() {
         return lname;
     }
 
-    public void setLName(String name) {
-        this.lname = name;
-    }
 
     public String getFullName() {
         return fname + " " + lname;
@@ -46,7 +41,4 @@ public class Doctor {
         return specialty;
     }
 
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
-    }
 }

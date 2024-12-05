@@ -32,6 +32,7 @@ public class AppointmentManagementActivity extends AppCompatActivity {
 
         myDB = new DBHelper(this);
 
+        // Navigate to AddAppointmentActivity when the add_appointment button is clicked
         add_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,11 +42,14 @@ public class AppointmentManagementActivity extends AppCompatActivity {
             }
         });
 
+        // Load appointments when the activity is created
         appointmentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Navigate to UpdateAppointmentActivity when an appointment is clicked
                 Appointment selectedAppointment = (Appointment) customAdapter.getItem(position);
                 Intent intent = new Intent(AppointmentManagementActivity.this, UpdateAppointmentActivity.class);
+                // Pass appointment details to UpdateAppointmentActivity
                 intent.putExtra("appointmentId", selectedAppointment.getId());
                 intent.putExtra("patientId", selectedAppointment.getPatientId());
                 intent.putExtra("doctorId", selectedAppointment.getDoctorId());
@@ -56,15 +60,18 @@ public class AppointmentManagementActivity extends AppCompatActivity {
             }
         });
 
+        // Handle long-press on an appointment to delete it
         appointmentList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Appointment selectedAppointment = (Appointment) customAdapter.getItem(position);
+                // Show a confirmation dialog before deleting the appointment
                 new AlertDialog.Builder(AppointmentManagementActivity.this)
                         .setTitle("Delete Appointment")
                         .setMessage("Are you sure you want to delete this appointment?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
+                            // Delete the selected appointment if confirmed
                             public void onClick(DialogInterface dialog, int which) {
                                 boolean result = myDB.deleteAppointment(selectedAppointment.getId());
                                 if (result) {
@@ -76,6 +83,7 @@ public class AppointmentManagementActivity extends AppCompatActivity {
                             }
 
                         })
+                        // Cancel the deletion if not confirmed
                         .setNegativeButton("No", null)
                         .show();
                 return true;
@@ -83,13 +91,16 @@ public class AppointmentManagementActivity extends AppCompatActivity {
         });
     }
 
+    // Load appointments when the activity is resumed
     @Override
     protected void onResume() {
         super.onResume();
         loadAppointments();
     }
 
+    // Helper method to load appointments from the database
     private void loadAppointments() {
+        // Get appointments from the database
         List<Appointment> appointments = myDB.getAppointments();
         customAdapter = new AppointmentCustomAdapter(this, appointments);
         appointmentList.setAdapter(customAdapter);
