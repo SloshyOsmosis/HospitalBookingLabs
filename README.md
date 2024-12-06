@@ -84,3 +84,6 @@ Users are able to select doctors and patients through spinners. These spinners a
 + In the future I would also implement a notification system to remind patients or doctors about upcoming appointments. 
 + Enhanced security measure such as multi factor authentication.
 + Implementation of digital signatures for adding and removing patient, doctor, and appointment details.
+
+## Authors
++ Daniel Herbert - Leeds Trinity University Computer Science Student
