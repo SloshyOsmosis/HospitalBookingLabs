@@ -25,6 +25,7 @@ Key features such as SHA-256 password hashing and salting is implemented to ensu
 + View and manage appointment details including date, time, and reason for booking (Checkup, surgery, etc).
 + AES encryption is used to encrypt sensitive data such as appointment reasons.
 + Doctor availability, users cannot book an appointment with a doctor within 15 minutes of an existing appointment.
++ Foreign keys in the appointment table schema, appointments are deleted if the associated doctor or patient is removed from the database.
 
 ## Lab Development
 
