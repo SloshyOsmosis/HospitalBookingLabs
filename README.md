@@ -35,17 +35,21 @@ This project was developed iteratively across 4 labs, with a focus on security a
 
 Lab 1 focuses on understanding the functional and non-functional requirements of the app through user stories and evil user stories.
 The aim was to ensure that the app met the needs of its users including the patients, doctors, and admins, as well as addressing potential misuse cases in the form of evil user stories.
+
 User stories were developed to outline potential scenarios within the app such as appointment booking and record updating, meanwhile evil user stories anticipated security vulnerabilities such as password brute forcing and SQL injections.
 
 ### Lab 3 (User Authentication)
 
 Lab 3 focuses on user authentication, An SQLite database was created to store user details. By the end of lab 3 the database schema only included tables for the users, with the implementation of doctor, patient, and appointment tables kept in mind for the later labs.
+
 Login and registration screens were developed, enabling user authentication. To ensure application security, SHA-256 password hashing was implemented, and input validation to protect against potential SQL attacks.
 
 ### Lab 4 (Patient Management)
 
 Lab 4 introduced the functionalities for managing patient records in the application. This enabled users to create, view, update and delete patient data while maintaining database integrity.
-The patient table was introduced to the database schema which consisted of patient ID, patient name, and patient gender. Sensitive information such as gender was encrypted to the database using AES, and decrypted using 'get' methods in the DBHelper.
+The patient table was introduced to the database schema which consisted of patient ID, patient name, and patient gender. 
+
+Sensitive information such as gender was encrypted to the database using AES, and decrypted using 'get' methods in the DBHelper.
 Toast messages were implemented to provide real-time feedback for successful or failed operations. Dynamic testing was implemented to test the CRUD functionalities on my personal android device, covering edge cases such as empty inputs.
 
 ### Lab 5 (Doctor Management and Booking Management)
@@ -54,6 +58,7 @@ Lab 5 further builds on CRUD functionalities but for the doctor database table, 
 Users are able to create, view, update and delete doctor data. 
 
 The appointment management system was also implemented in lab 5, which bridged the functionality of patient and doctor records. This subsystem enables users to create, view, update, and delete appointments while ensuring sensitive data such as appointment reasons are encrypted for security.
+
 Users are able to select doctors and patients through spinners. These spinners are populated from the database tables for patients and doctors.
 Foreign keys are also implemented into the appointments table in the database. The purpose of this is to establish relationships with the patients and doctors table to ensure data integrity and consistency. Appointments are removed if the associated patient or doctor is deleted from the database.
 
