@@ -70,7 +70,11 @@ Users are able to select doctors and patients through spinners. These spinners a
 1. Encryption:
 + Advanced Encryption Standard applied to sensitive data fields, ensuring confidentiality of appointment details.
 
-2. Data Validation:
+2. Password Hashing:
++ SHA-256 used for passwords.
++ Hashed passwords are salted.
+
+3. Data Validation:
 + Input validation is implemented to ensure data integrity and to prevent SQL injection.
 + Email validation and password validation (Password must be at least 8 characters long, at least one uppercase letter, one number, and one special character.)
 
