@@ -54,6 +54,7 @@ Users are able to create, view, update and delete doctor data.
 
 The appointment management system was also implemented in lab 5, which bridged the functionality of patient and doctor records. This subsystem enables users to create, view, update, and delete appointments while ensuring sensitive data such as appointment reasons are encrypted for security.
 Users are able to select doctors and patients through spinners. These spinners are populated from the database tables for patients and doctors.
+Foreign keys are also implemented into the appointments table in the database. The purpose of this is to establish relationships with the patients and doctors table to ensure data integrity and consistency. Appointments are removed if the associated patient or doctor is deleted from the database.
 
 
 ## Installation
